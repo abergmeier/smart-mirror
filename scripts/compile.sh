@@ -33,8 +33,27 @@ function buildMesa {
         curl -O http://ftp.de.debian.org/debian/pool/main/w/wayland/libwayland-client0_1.18.0-2~exp1.1_arm64.deb
         sudo dpkg -i "$HOME/.cache/libffi"*.deb "$HOME/.cache/libwayland"*.deb
     )
-    sudo apt-get install bison flex libdrm-dev libwayland-client0 libwayland-dev wayland-protocols -y
+    sudo apt-get install bison\
+                         flex\
+                         libdrm-dev\
+                         libwayland-client0\
+                         libwayland-dev\
+                         wayland-protocols\
+                         libx11-dev\
+                         libxext-dev\
+                         libxfixes-dev\
+                         libxcb-glx0-dev\
+                         libxcb-shm0-dev\
+                         libx11-xcb-dev\
+                         libxcb-dri2-0-dev\
+                         libxcb-dri3-dev\
+                         libxcb-present-dev\
+                         libxshmfence-dev\
+                         libxxf86vm-dev\
+                         libxrandr-dev\
+                         ninja-build  -y
     pip3 install meson mako
+    sudo pip3 install meson mako
     file=mesa-21.0.0-rc5.tar.xz
     downloaded="$HOME/.cache/$file"
     downloadUncached https://archive.mesa3d.org/$file "$downloaded" f57d23aa69d5ed7cfde250a7bf8f72285a34692f9e8d541532fa6970f941ce01
@@ -48,8 +67,8 @@ function buildMesa {
         mkdir -p "$builddir"
         cp "${ROOT_DIR}/mesa_options.txt" "$HOME/.cache/mesa_source/meson_options.txt"
         meson "$HOME/.cache/mesa_build" -Dplatforms=x11,wayland -Ddri-drivers='' -Dgallium-drivers=v3d,vc4 -Dvulkan-drivers=broadcom
-        #ninja -C builddir/
-        #sudo ninja -C builddir/ install
+        ninja -C "$builddir/"
+        sudo ninja -C "$builddir/" install
     )
 }
 
